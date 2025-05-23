@@ -1,9 +1,7 @@
-import { type SharedData } from '@/types';
+
 import { Head, Link, usePage } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import Nav from '@/components/Nav'; 
-
-import React from 'react'
 import { Post } from '@/types/post';
 import ListPost from '@/components/Post/ListPost';
 

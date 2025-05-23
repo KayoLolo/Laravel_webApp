@@ -1,7 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
 
 type AuthProps = {
-    user?: any;
+    user?: unknown;
 };
 
 export default function Nav() {
