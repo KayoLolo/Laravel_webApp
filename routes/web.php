@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Post;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -22,14 +25,20 @@ Route::get('/', function () {
 // })->name('home');
 
 Route::get('/Dashboard', function () {
+    $user = Auth::user();
+    if (!$user) {
+        abort(403, 'Unauthorized');
+    }
+    $userPosts = Post::where('user_id', $user->id)->latest()->get();
+
     return Inertia::render('Dashboard', [
-        'userPosts' => [], // Remplace [] par tes vrais posts si besoin
+        'userPosts' => $userPosts,
     ]);
 })->middleware(['auth', 'verified'])->name('Dashboard');
 
 Route::get('/posts/create', function () {
-        return Inertia::render('Posts/Create');
-    })->name('posts.create');
+    return Inertia::render('Posts/Create');
+})->name('posts.create');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/register', [RegisteredUserController::class, 'store']);
+    Route::post('posts', [PostController::class, 'store'])->name('posts.store');
 
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);

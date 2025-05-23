@@ -36,8 +36,8 @@ export default function Dashboard({ userPosts }: Props) {
                             </Link>
                         </div>
 
-                        {userPosts.length > 0 ? (
-                            <ListPost posts={userPosts} showAuthor={true} canEdit={true} />
+                        {(userPosts ?? []).length > 0 ? (
+                            <ListPost posts={userPosts ?? []} showAuthor={true} canEdit={true} />
                         ) : (
                             <div className='text-center py-12'>
                                 <p className='mb-4 text-gray-500'>Aucune publication trouvée.</p>

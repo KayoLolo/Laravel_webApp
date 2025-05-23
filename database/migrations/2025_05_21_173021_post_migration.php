@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->integer('likes')->default(0);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->timestamp(0);
+            $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('post_like', function(Blueprint $table){
@@ -27,7 +27,8 @@ return new class extends Migration
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->unique(['user_id', 'post_id']);
-            $table->timestamp(0);
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 
